@@ -72,7 +72,6 @@ blog-system/
 ├── app.py
 ├── database.py
 ├── models.py
-├── blog.db
 ├── requirements.txt
 ├── .gitignore
 ├── README.md
