@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Campus Blog</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="nav-container">
+
+            <a href="/" class="logo">
+                Campus<span>Blog</span>
+            </a>
+
+            <div class="nav-links">
+
+                {% if session.get("user_id") %}
+
+                    <a href="/">Home</a>
+
+                    <a href="/post/create">
+                        Create Post
+                    </a>
+
+                    <a href="/profile">
+                        Profile
+                    </a>
+
+                    {% if session.get("is_admin") %}
+                        <a href="/admin">
+                            Admin
+                        </a>
+                    {% endif %}
+
+                    <a href="/logout" class="logout-link">
+                        Logout
+                    </a>
+
+                {% else %}
+
+                    <a href="/login">
+                        Login
+                    </a>
+
+                    <a
+                        href="/register"
+                        class="register-link"
+                    >
+                        Register
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <main class="container">
+
+        <section class="hero">
+
+            <div>
+
+                <p class="eyebrow">
+                    CAMPUS BLOG
+                </p>
+
+                <h1>
+                    Ideas worth sharing.
+                </h1>
+
+                <p class="hero-text">
+                    Read stories, share your thoughts,
+                    and connect with other writers.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <section class="search-section">
+
+            <form
+                action="/search"
+                method="GET"
+                class="search-form"
+            >
+
+                <input
+                    type="text"
+                    name="q"
+                    placeholder="Search posts..."
+                    value="{{ search_query or '' }}"
+                >
+
+                <button type="submit">
+                    Search
+                </button>
+
+            </form>
+
+        </section>
+
+
+        {% if session.get("user_id") %}
+
+            <div class="welcome-card">
+
+                <div>
+
+                    <p class="muted">
+                        Welcome back
+                    </p>
+
+                    <h2>
+                        {{ session["username"] }}
+                    </h2>
+
+                </div>
+
+                <a
+                    href="/post/create"
+                    class="primary-button"
+                >
+                    + Create Post
+                </a>
+
+            </div>
+
+        {% endif %}
+
+
+        <section class="posts-section">
+
+            <div class="section-header">
+
+                <div>
+
+                    <p class="eyebrow">
+                        LATEST
+                    </p>
+
+                    <h2>
+                        Recent Posts
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="post-grid">
+
+                {% for post in posts %}
+
+                    <article class="post-card">
+
+                        <div class="post-card-content">
+
+                            <p class="post-author">
+                                By {{ post[5] }}
+                            </p>
+
+                            <h3>
+
+                                <a
+                                    href="/post/{{ post[0] }}"
+                                >
+                                    {{ post[1] }}
+                                </a>
+
+                            </h3>
+
+                            <p class="post-preview">
+                                {{ post[2] }}
+                            </p>
+
+                        </div>
+
+                        <div class="post-card-footer">
+
+                            <span class="muted">
+                                {{ post[4] }}
+                            </span>
+
+                            <a
+                                href="/post/{{ post[0] }}"
+                                class="read-more"
+                            >
+                                Read →
+                            </a>
+
+                        </div>
+
+                    </article>
+
+                {% else %}
+
+                    <div class="empty-state">
+
+                        <h3>
+                            No posts yet
+                        </h3>
+
+                        <p>
+                            Be the first person to
+                            publish something.
+                        </p>
+
+                        {% if session.get("user_id") %}
+
+                            <a
+                                href="/post/create"
+                                class="primary-button"
+                            >
+                                Create the first post
+                            </a>
+
+                        {% endif %}
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer>
+
+        <p>
+            © 2026 Campus Blog
+        </p>
+
+    </footer>
+
+</body>
+
+</html>

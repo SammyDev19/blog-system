@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>{{ user[1] }}'s Profile | Campus Blog</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="nav-container">
+
+            <a href="/" class="logo">
+                Campus<span>Blog</span>
+            </a>
+
+            <div class="nav-links">
+
+                <a href="/">
+                    Home
+                </a>
+
+                <a href="/post/create">
+                    Create Post
+                </a>
+
+                {% if session.get("is_admin") %}
+
+                    <a href="/admin">
+                        Admin
+                    </a>
+
+                {% endif %}
+
+                <a href="/logout" class="logout-link">
+                    Logout
+                </a>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <main class="container">
+
+        <section class="profile-header">
+
+            <p class="eyebrow">
+                PROFILE
+            </p>
+
+            <h1>
+                {{ user[1] }}
+            </h1>
+
+            <p class="hero-text">
+                Your Campus Blog profile and posts.
+            </p>
+
+        </section>
+
+
+        <section class="posts-section">
+
+            <div class="section-header">
+
+                <p class="eyebrow">
+                    YOUR CONTENT
+                </p>
+
+                <h2>
+                    Your Posts
+                </h2>
+
+            </div>
+
+
+            <div class="post-grid">
+
+                {% for post in posts %}
+
+                    <article class="post-card">
+
+                        <div class="post-card-content">
+
+                            <h3>
+
+                                <a href="/post/{{ post[0] }}">
+                                    {{ post[1] }}
+                                </a>
+
+                            </h3>
+
+                            <p class="post-preview">
+                                {{ post[2] }}
+                            </p>
+
+                        </div>
+
+                        <div class="post-card-footer">
+
+                            <span class="muted">
+                                {{ post[3] }}
+                            </span>
+
+                            <a
+                                href="/post/{{ post[0] }}"
+                                class="read-more"
+                            >
+                                View →
+                            </a>
+
+                        </div>
+
+                    </article>
+
+                {% else %}
+
+                    <div class="empty-state">
+
+                        <h3>
+                            No posts yet
+                        </h3>
+
+                        <p>
+                            You haven't published anything yet.
+                        </p>
+
+                        <a
+                            href="/post/create"
+                            class="primary-button"
+                        >
+                            Create Your First Post
+                        </a>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+
+        <section class="danger-zone">
+
+            <div>
+
+                <p class="eyebrow">
+                    ACCOUNT
+                </p>
+
+                <h2>
+                    Delete Account
+                </h2>
+
+                <p class="muted">
+                    This permanently deletes your account
+                    and your posts. This action cannot be undone.
+                </p>
+
+            </div>
+
+
+            <form
+                action="/account/delete"
+                method="POST"
+                onsubmit="return confirm('Delete your account permanently? This cannot be undone.')"
+            >
+
+                <button
+                    type="submit"
+                    class="danger"
+                >
+                    Delete My Account
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <a href="/" class="back-link">
+            ← Back to Home
+        </a>
+
+    </main>
+
+
+    <footer>
+
+        <p>
+            © 2026 Campus Blog
+        </p>
+
+    </footer>
+
+</body>
+
+</html>

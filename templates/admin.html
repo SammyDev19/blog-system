@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Admin Dashboard</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="nav-container">
+
+            <a href="/" class="logo">
+                Campus<span>Blog</span>
+            </a>
+
+            <div class="nav-links">
+
+                <a href="/">Home</a>
+
+                <a href="/profile">Profile</a>
+
+                <a href="/logout" class="logout-link">
+                    Logout
+                </a>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <main class="container">
+
+        <section class="hero">
+
+            <p class="eyebrow">
+                ADMINISTRATION
+            </p>
+
+            <h1>
+                Admin Dashboard
+            </h1>
+
+            <p class="hero-text">
+                Manage users and posts across the blog.
+            </p>
+
+        </section>
+
+
+        <!-- USERS -->
+
+        <section class="posts-section">
+
+            <div class="section-header">
+
+                <p class="eyebrow">
+                    USERS
+                </p>
+
+                <h2>
+                    Registered Users
+                </h2>
+
+            </div>
+
+
+            {% for user in users %}
+
+                <div class="card">
+
+                    <div class="welcome-card">
+
+                        <div>
+
+                            <h3>
+                                {{ user[1] }}
+                            </h3>
+
+                            {% if user[2] %}
+
+                                <p class="muted">
+                                    Administrator
+                                </p>
+
+                            {% else %}
+
+                                <p class="muted">
+                                    Regular User
+                                </p>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        {% if not user[2] %}
+
+                            <form
+                                action="/admin/user/{{ user[0] }}/delete"
+                                method="POST"
+                                onsubmit="return confirm('Delete this user?')"
+                            >
+
+                                <button
+                                    type="submit"
+                                    class="danger"
+                                >
+                                    Delete User
+                                </button>
+
+                            </form>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </section>
+
+
+        <!-- POSTS -->
+
+        <section class="posts-section">
+
+            <div class="section-header">
+
+                <p class="eyebrow">
+                    CONTENT
+                </p>
+
+                <h2>
+                    All Posts
+                </h2>
+
+            </div>
+
+
+            {% for post in posts %}
+
+                <article class="post-card">
+
+                    <div class="post-card-content">
+
+                        <p class="post-author">
+                            By {{ post[5] }}
+                        </p>
+
+                        <h3>
+
+                            <a href="/post/{{ post[0] }}">
+                                {{ post[1] }}
+                            </a>
+
+                        </h3>
+
+                        <p class="post-preview">
+                            {{ post[2] }}
+                        </p>
+
+                    </div>
+
+
+                    <div class="post-card-footer">
+
+                        <span class="muted">
+                            {{ post[4] }}
+                        </span>
+
+
+                        <form
+                            action="/post/{{ post[0] }}/delete"
+                            method="POST"
+                            onsubmit="return confirm('Delete this post?')"
+                        >
+
+                            <button
+                                type="submit"
+                                class="danger"
+                            >
+                                Delete Post
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </article>
+
+            {% else %}
+
+                <div class="empty-state">
+
+                    <h3>
+                        No posts available
+                    </h3>
+
+                    <p>
+                        There are currently no posts to manage.
+                    </p>
+
+                </div>
+
+            {% endfor %}
+
+        </section>
+
+    </main>
+
+
+    <footer>
+
+        <p>
+            © 2026 Campus Blog
+        </p>
+
+    </footer>
+
+</body>
+
+</html>

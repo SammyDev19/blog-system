@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>{{ post[1] }} | Campus Blog</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="nav-container">
+
+            <a href="/" class="logo">
+                Campus<span>Blog</span>
+            </a>
+
+            <div class="nav-links">
+
+                <a href="/">Home</a>
+
+                {% if session.get("user_id") %}
+
+                    <a href="/post/create">
+                        Create Post
+                    </a>
+
+                    <a href="/profile">
+                        Profile
+                    </a>
+
+                    <a href="/logout" class="logout-link">
+                        Logout
+                    </a>
+
+                {% else %}
+
+                    <a href="/login">
+                        Login
+                    </a>
+
+                    <a href="/register" class="register-link">
+                        Register
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <main class="container">
+
+        <article class="single-post">
+
+            <p class="eyebrow">
+                BLOG POST
+            </p>
+
+            <h1>
+                {{ post[1] }}
+            </h1>
+
+            <div class="post-meta">
+
+                <span>
+                    By <strong>{{ post[5] }}</strong>
+                </span>
+
+                <span>
+                    {{ post[4] }}
+                </span>
+
+            </div>
+
+
+            <div class="post-content">
+
+                <p>
+                    {{ post[2] }}
+                </p>
+
+            </div>
+
+
+            <div class="post-actions">
+
+                <form
+                    action="/post/{{ post[0] }}/like"
+                    method="POST"
+                >
+
+                    <button type="submit">
+                        ❤️ {{ likes }} Likes
+                    </button>
+
+                </form>
+
+
+                {% if session.get("user_id") == post[3] %}
+
+                    <a
+                        href="/post/{{ post[0] }}/edit"
+                        class="primary-button"
+                    >
+                        Edit Post
+                    </a>
+
+                    <form
+                        action="/post/{{ post[0] }}/delete"
+                        method="POST"
+                        onsubmit="return confirm('Delete this post?')"
+                    >
+
+                        <button
+                            type="submit"
+                            class="danger"
+                        >
+                            Delete Post
+                        </button>
+
+                    </form>
+
+                {% endif %}
+
+            </div>
+
+        </article>
+
+
+        <!-- COMMENTS -->
+
+        <section class="comments-section">
+
+            <div class="section-header">
+
+                <p class="eyebrow">
+                    DISCUSSION
+                </p>
+
+                <h2>
+                    Comments
+                </h2>
+
+            </div>
+
+
+            {% for comment in comments %}
+
+                <div class="comment">
+
+                    <strong>
+                        {{ comment[4] }}
+                    </strong>
+
+                    <p>
+                        {{ comment[1] }}
+                    </p>
+
+                    <small class="muted">
+                        {{ comment[3] }}
+                    </small>
+
+                </div>
+
+            {% else %}
+
+                <div class="empty-state">
+
+                    <h3>
+                        No comments yet
+                    </h3>
+
+                    <p>
+                        Be the first to join the discussion.
+                    </p>
+
+                </div>
+
+            {% endfor %}
+
+
+            {% if session.get("user_id") %}
+
+                <div class="card comment-form">
+
+                    <h3>
+                        Leave a comment
+                    </h3>
+
+                    <form
+                        action="/post/{{ post[0] }}/comment"
+                        method="POST"
+                    >
+
+                        <textarea
+                            name="content"
+                            rows="5"
+                            placeholder="Write your comment..."
+                            required
+                        ></textarea>
+
+                        <button type="submit">
+                            Post Comment
+                        </button>
+
+                    </form>
+
+                </div>
+
+            {% else %}
+
+                <div class="card login-comment">
+
+                    <p>
+                        <a href="/login">
+                            Login
+                        </a>
+                        to leave a comment.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+
+        <a href="/" class="back-link">
+            ← Back to Home
+        </a>
+
+    </main>
+
+
+    <footer>
+
+        <p>
+            © 2026 Campus Blog
+        </p>
+
+    </footer>
+
+</body>
+
+</html>
