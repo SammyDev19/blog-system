@@ -37,7 +37,7 @@ The application allows users to create accounts, publish and manage blog posts, 
 
 1. Clone the repository:
 
-git clone https://github.com/SammyCruz19/blog-system.git
+git clone https://github.com/SammyDev19/blog-system.git
 
 2. Navigate into the project:
 
